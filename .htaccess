@@ -1,0 +1,30 @@
+# ------------------------------
+# Réécriture & 404 personnalisée
+# ------------------------------
+RewriteEngine On
+RewriteBase /
+
+# Page 404 (servie en interne)
+ErrorDocument 404 /404.html
+
+# 1) Forcer HTTPS (gère aussi X-Forwarded-Proto des proxy/CDN)
+# RewriteCond %{HTTPS} !=on
+# RewriteCond %{HTTP:X-Forwarded-Proto} !https
+# RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [R=301,L]
+
+# 2) Laisser passer l'exécution interne d'index.php (sinon 404 après réécriture)
+RewriteRule ^index\.php$ - [L]
+
+# 3) Autoriser /404.html UNIQUEMENT quand c'est la sous-requête 404
+#    (empêche l'accès direct à /404.html)
+RewriteCond %{REQUEST_URI} ^/404\.html$
+RewriteCond %{ENV:REDIRECT_STATUS} =404
+RewriteRule ^ - [L]
+
+# 4) Route unique: /<event_id> (base32hex a-v, 0-9 ; longueur 5..1024)
+#    Exemple: /6h8o3p6psd1rlv3r5g7ql8b5a4
+# RewriteRule ^([a-v0-9]{5,1024})$ index.php?id=$1 [QSA,L]
+RewriteRule ^([a-v0-9]{16,64})(?:/.*)?$ index.php?id=$1 [QSA,L]
+
+# 5) Tout le reste -> 404 (et ErrorDocument sert /404.html sans boucle)
+RewriteRule . - [R=404,L]
