@@ -4,7 +4,13 @@ const CACHE = false;
 
 date_default_timezone_set('America/Toronto');
 
+header('Cache-Control: no-store, no-cache, must-revalidate, max-age=0, private');
+header('Pragma: no-cache');
+header('Expires: 0');
+
+
 if(!isset($_GET['id'])) throw_404();
+
 
 if(!is_scraper()) redirect('https://agenda.deuxpardeux.quebec/?id=' . $_GET['id']);
 
