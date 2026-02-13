@@ -7,7 +7,7 @@ const cfg = JSON.parse(fs.readFileSync(path.join(__dirname, "deploy-service.json
 const items = [
 	".htaccess",
 	"404.html",
-	"bt1oh97j7X.bin",
+	// "bt1oh97j7X.bin",
 	"favicon.ico",
 	"index.php",
 	"template.php"
