@@ -16,7 +16,7 @@ if(!is_scraper()) redirect('https://agenda.deuxpardeux.quebec/?id=' . $_GET['id'
 
 
 $obscur = file_get_contents(__DIR__ . '/bt1oh97j7X.bin');
-$inflate = gzdecode($obscur);
+$inflate = gzdecode("\x1f\x8b" . $obscur);
 $base64 = str_rot13($inflate);
 $json = base64_decode($base64);
 $CONFIG = json_decode($json);
